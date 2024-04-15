@@ -954,7 +954,7 @@ _You can enable the following settings in Xcode by running [this script](resourc
   else { … }
   ```
 
-* <a id='else-on-same-line'></a>(<a href='#else-on-same-line'>link</a>) **Else statements should start on the same line as the previous condition's closing brace, unless the conditions are separated by a blank line or comments. [![SwiftFormat: elseOnSameLine](https://img.shields.io/badge/SwiftFormat-elseOnSameLine-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md#elseOnSameLine)
+* <a id='else-on-same-line'></a>(<a href='#else-on-same-line'>link</a>) **Else statements should start on the same line as the previous condition's closing brace, unless the conditions are separated by a blank line or comments.** [![SwiftFormat: elseOnSameLine](https://img.shields.io/badge/SwiftFormat-elseOnSameLine-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md#elseOnSameLine)
 
   <details>
 
@@ -1240,6 +1240,131 @@ _You can enable the following settings in Xcode by running [this script](resourc
 
   </details>
 
+* <a id='blank-line-after-multiline-switch-case'></a>(<a href='#blank-line-after-multiline-switch-case'>link</a>) **Insert a blank line following a switch case with a multi-line body.** Spacing within an individual switch statement should be consistent. If any case has a multi-line body then all cases should include a trailing blank line. The last switch case doesn't need a blank line, since it is already followed by a closing brace. [![SwiftFormat: blankLineAfterMultilineSwitchCase](https://img.shields.io/badge/SwiftFormat-blankLineAfterMultilineSwitchCase-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md#blankLineAfterMultilineSwitchCase) [![SwiftFormat: consistentSwitchStatementSpacing](https://img.shields.io/badge/SwiftFormat-consistentSwitchStatementSpacing-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md#consistentSwitchStatementSpacing)
+
+  <details>
+
+  #### Why?
+
+  Like with [declarations in a file](#newline-between-scope-siblings), inserting a blank line between scopes makes them easier to visually differentiate.
+  
+  Complex switch statements are visually busy without blank lines between the cases, making it more difficult to read the code and harder to distinguish between individual cases at a glance. Blank lines between the individual cases make complex switch statements easier to read.
+
+  #### Examples
+
+  ```swift
+  // WRONG. These switch cases should be followed by a blank line.
+  func handle(_ action: SpaceshipAction) {
+    switch action {
+    case .engageWarpDrive:
+      navigationComputer.destination = targetedDestination
+      warpDrive.spinUp()
+      warpDrive.activate()
+    case .enableArtificialGravity:
+      artificialGravityEngine.enable(strength: .oneG)
+    case .scanPlanet(let planet):
+      scanner.target = planet
+      scanner.scanAtmosphere()
+      scanner.scanBiosphere()
+      scanner.scanForArtificialLife()
+    case .handleIncomingEnergyBlast:
+      energyShields.engage()
+    }
+  }
+
+  // WRONG. While the `.enableArtificialGravity` case isn't multi-line, the other cases are.
+  // For consistency, it should also include a trailing blank line.
+  func handle(_ action: SpaceshipAction) {
+    switch action {
+    case .engageWarpDrive:
+      navigationComputer.destination = targetedDestination
+      warpDrive.spinUp()
+      warpDrive.activate()
+
+    case .enableArtificialGravity:
+      artificialGravityEngine.enable(strength: .oneG)
+    case .scanPlanet(let planet):
+      scanner.target = planet
+      scanner.scanAtmosphere()
+      scanner.scanBiosphere()
+      scanner.scanForArtificialLife()
+      
+    case .handleIncomingEnergyBlast:
+      energyShields.engage()
+    }
+  }
+
+  // RIGHT. All of the cases have a trailing blank line.
+  func handle(_ action: SpaceshipAction) {
+    switch action {
+    case .engageWarpDrive:
+      navigationComputer.destination = targetedDestination
+      warpDrive.spinUp()
+      warpDrive.activate()
+
+    case .enableArtificialGravity:
+      artificialGravityEngine.enable(strength: .oneG)
+
+    case .scanPlanet(let planet):
+      scanner.target = planet
+      scanner.scanAtmosphere()
+      scanner.scanBiosphere()
+      scanner.scanForArtificialLife()
+      
+    case .handleIncomingEnergyBlast:
+      energyShields.engage()
+    }
+  }
+
+  // RIGHT. Since none of the cases are multi-line, blank lines are not required.
+  func handle(_ action: SpaceshipAction) {
+    switch action {
+    case .engageWarpDrive:
+      warpDrive.engage()
+    case .enableArtificialGravity:
+      artificialGravityEngine.enable(strength: .oneG)
+    case .scanPlanet(let planet):
+      scanner.scan(planet)
+    case .handleIncomingEnergyBlast:
+      energyShields.engage()
+    }
+  }
+
+  // ALSO RIGHT. Blank lines are still permitted after single-line switch cases if it helps with readability.
+  func handle(_ action: SpaceshipAction) {
+    switch action {
+    case .engageWarpDrive:
+      warpDrive.engage()
+
+    case .enableArtificialGravity:
+      artificialGravityEngine.enable(strength: .oneG)
+
+    case .scanPlanet(let planet):
+      scanner.scan(planet)
+
+    case .handleIncomingEnergyBlast:
+      energyShields.engage()
+    }
+  }
+
+  // WRONG. While it's fine to use blank lines to separate cases, spacing within a single switch statement should be consistent.
+  func handle(_ action: SpaceshipAction) {
+    switch action {
+    case .engageWarpDrive:
+      warpDrive.engage()
+    case .enableArtificialGravity:
+      artificialGravityEngine.enable(strength: .oneG)
+    case .scanPlanet(let planet):
+      scanner.scan(planet)
+
+    case .handleIncomingEnergyBlast:
+      energyShields.engage()
+    }
+  }
+  ```
+
+  </details>
+
 * <a id='wrap-guard-else'></a>(<a href='#wrap-guard-else'>link</a>) **Add a line break before the `else` keyword in a multi-line guard statement.** For single-line guard statements, keep the `else` keyword on the same line as the `guard` keyword. The open brace should immediately follow the `else` keyword. [![SwiftFormat: elseOnSameLine](https://img.shields.io/badge/SwiftFormat-elseOnSameLine-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md#elseOnSameLine)
 
   <details>
@@ -1519,6 +1644,127 @@ _You can enable the following settings in Xcode by running [this script](resourc
       // Now that we have an atmosphere, it's safe to generate the ocean
       generateOceans()
     }
+  }
+  ```
+
+  </details>
+
+* <a id='doc-comments-before-declarations'></a>(<a href='#doc-comments-before-declarations'>link</a>) **Use doc comments (`///`) instead of regular comments (`//`) before declarations within type bodies or at the top level.** [![SwiftFormat: docComments](https://img.shields.io/badge/SwiftFormat-docComments-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md#docComments)
+
+  <details>
+
+  ```swift
+  // WRONG
+
+  // A planet that exists somewhere in the universe.
+  class Planet {
+    // Data about the composition and density of the planet's atmosphere if present.
+    var atmosphere: Atmosphere?
+
+    // Data about the size, location, and composition of large bodies of water on the planet's surface.
+    var oceans: [Ocean]
+
+    // Terraforms the planet, by adding an atmosphere and ocean that is hospitable for life.
+    func terraform() {
+      // This gas composition has a pretty good track record so far!
+      let composition = AtmosphereComposition(nitrogen: 0.78, oxygen: 0.22)
+
+      // Generate the atmosphere first, then the oceans. Otherwise, the water will just boil off immediately.
+      generateAtmosphere(using: composition)
+      generateOceans()
+    }
+  }
+
+  // RIGHT
+
+  /// A planet that exists somewhere in the universe.
+  class Planet {
+    /// Data about the composition and density of the planet's atmosphere if present.
+    var atmosphere: Atmosphere?
+
+    /// Data about the size, location, and composition of large bodies of water on the planet's surface.
+    var oceans: [Ocean]
+
+    /// Terraforms the planet, by adding an atmosphere and ocean that is hospitable for life.
+    func terraform() {
+      // This gas composition has a pretty good track record so far!
+      let composition = AtmosphereComposition(nitrogen: 0.78, oxygen: 0.22)
+
+      // Generate the atmosphere first, then the oceans. Otherwise, the water will just boil off immediately.
+      generateAtmosphere(using: composition)
+      generateOceans()
+    }
+  }
+  
+  // ALSO RIGHT:
+
+  func terraform() {
+    /// This gas composition has a pretty good track record so far!
+    ///  - Doc comments are not required before local declarations in function scopes, but are permitted.
+    let composition = AtmosphereComposition(nitrogen: 0.78, oxygen: 0.22)
+
+    /// Generate the `atmosphere` first, **then** the `oceans`. Otherwise, the water will just boil off immediately.
+    ///  - Comments not preceeding declarations can use doc comments, and will not be autocorrected into regular comments.
+    ///    This can be useful because Xcode applies markdown styling to doc comments but not regular comments.
+    generateAtmosphere(using: composition)
+    generateOceans()
+  }
+  ```
+
+  Regular comments are permitted before declarations in some cases. 
+  
+  For example, comment directives like `// swiftformat:`, `// swiftlint:`, `// sourcery:`, `// MARK:` and `// TODO:` are typically required to use regular comments and don't work correctly with doc comments:
+
+  ```swift
+  // RIGHT
+
+  // swiftformat:sort
+  enum FeatureFlags {
+    case allowFasterThanLightTravel
+    case disableGravity
+    case enableDarkEnergy
+    case enableDarkMatter
+  }
+
+  // TODO: There are no more production consumers of this legacy model, so we
+  // should detangle the remaining code dependencies and clean it up.
+  struct LegacyGeocentricUniverseModel {
+    ...
+  }
+  ```
+
+  Regular comments are also allowed before a grouped block of delcarations, since it's possible that the comment refers to the block as a whole rather than just the following declaration:
+
+  ```swift
+  // RIGHT
+
+  enum Planet {
+    // The inner planets
+    case mercury
+    case venus
+    case earth
+    case mars
+
+    // The outer planets
+    case jupiter
+    case saturn
+    case uranus
+    case neptune
+  }
+
+  // ALSO RIGHT
+
+  enum Planet {
+    /// The smallest planet
+    case mercury
+    case venus
+    case earth
+    case mars
+    /// The largest planet
+    case jupiter
+    case saturn
+    case uranus
+    case neptune
   }
   ```
 
@@ -2144,6 +2390,44 @@ _You can enable the following settings in Xcode by running [this script](resourc
   // (e.g. [Planet], [Moon]), so this is not a "bound generic type" and isn't
   // eligible for the generic bracket syntax.
   extension Array where Element: PlanetaryBody { }
+  ```
+
+  </details>
+
+* <a id='no-semicolons'></a>(<a href='#no-semicolons'>link</a>) **Avoid using semicolons.** Semicolons are not required at the end of a line, so should be omitted. While you can use semicolons to place two statements on the same line, it is more common and preferred to separate them using a newline instead. [![SwiftFormat: semicolons](https://img.shields.io/badge/SwiftFormat-semicolons-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/master/Rules.md#semicolons)
+
+  <details>
+
+  ### Examples
+
+  ```swift
+  // WRONG. Semicolons are not required and can be omitted.
+  let mercury = planets[0];
+  let venus = planets[1];
+  let earth = planets[2];
+
+  // WRONG. While you can use semicolons to place multiple statements on a single line,
+  // it is more common and preferred to separate them using newlines instead.
+  let mercury = planets[0]; let venus = planets[1]; let earth = planets[2];
+
+  // RIGHT
+  let mercury = planets[0]
+  let venus = planets[1]
+  let earth = planets[2]
+
+  // WRONG
+  guard let moon = planet.moon else { completion(nil); return }
+
+  // WRONG
+  guard let moon = planet.moon else { 
+    completion(nil); return
+  }
+
+  // RIGHT
+  guard let moon = planet.moon else { 
+    completion(nil)
+    return
+  }
   ```
 
   </details>
