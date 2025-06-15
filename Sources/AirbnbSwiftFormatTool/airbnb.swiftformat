@@ -15,9 +15,10 @@
 --wrapparameters before-first # wrapArguments
 --wrapcollections before-first # wrapArguments
 --wrapconditions before-first # wrapArguments
---wrapreturntype if-multiline #wrapArguments
---wrapeffects if-multiline #wrapArguments
---closingparen same-line # wrapArguments
+--wrapreturntype never #wrapArguments
+--wrapeffects never #wrapArguments
+--closingparen balanced # wrapArguments
+--callsiteparen balanced # wrapArguments
 --wraptypealiases before-first # wrapArguments
 --funcattributes prev-line # wrapAttributes
 --computedvarattrs prev-line # wrapAttributes
@@ -25,6 +26,7 @@
 --complexattrs prev-line # wrapAttributes
 --typeattributes prev-line # wrapAttributes
 --wrapternary before-operators # wrap
+--wrapstringinterpolation preserve # wrap
 --structthreshold 20 # organizeDeclarations
 --enumthreshold 20 # organizeDeclarations
 --organizetypes class,struct,enum,extension,actor # organizeDeclarations
@@ -87,6 +89,7 @@
 --rules redundantVoidReturnType
 --rules redundantOptionalBinding
 --rules redundantInternal
+--rules redundantPublic
 --rules redundantProperty
 --rules unusedArguments
 --rules spaceInsideBrackets
@@ -119,7 +122,9 @@
 --rules semicolons
 --rules propertyTypes
 --rules blankLinesBetweenChainedFunctions
---rules unusedPrivateDeclarations
 --rules emptyExtensions
 --rules preferCountWhere
 --rules swiftTestingTestCaseNames
+--rules modifiersOnSameLine
+--rules throwingTests
+--rules noGuardInTests

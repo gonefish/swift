@@ -82,6 +82,7 @@ The package plugin returns a non-zero exit code if there is a lint failure that 
 1. [Patterns](#patterns)
 1. [File Organization](#file-organization)
 1. [Objective-C Interoperability](#objective-c-interoperability)
+1. [Testing](#testing)
 1. [Contributors](#contributors)
 1. [Amendments](#amendments)
 
@@ -160,17 +161,16 @@ _You can enable the following settings in Xcode by running [this script](resourc
     public func executeRequest(
       _ request: URLRequest,
       onSuccess: @escaping (ModelType, Bool) -> Void,
-      onFailure: @escaping (Error) -> Void)
-      -> URLSessionCancellable
-    {
+      onFailure: @escaping (Error) -> Void
+    ) -> URLSessionCancellable {
       return _executeRequest(request, onSuccess, onFailure)
     }
 
     private let _executeRequest: (
       URLRequest,
       @escaping (ModelType, Bool) -> Void,
-      @escaping (Error) -> Void)
-      -> URLSessionCancellable
+      @escaping (Error) -> Void
+    ) -> URLSessionCancellable
   }
   ```
 
@@ -953,6 +953,32 @@ _You can enable the following settings in Xcode by running [this script](resourc
 
   </details>
 
+* <a id='modifiers-on-same-line'></a>(<a href='#modifiers-on-same-line'>link</a>) **Place modifiers for a declaration on the same line as the rest of the declaration**. [![SwiftFormat: modifiersOnSameLine](https://img.shields.io/badge/SwiftFormat-modifiersOnSameLine-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#modifiersOnSameLine)
+
+  <details>
+
+  ```swift
+  // WRONG
+  public struct Spaceship {
+    nonisolated
+    public func fly() { … }
+
+    @MainActor
+    public
+    func fly() { … }
+  }
+
+  // RIGHT
+  public struct Spaceship {
+    nonisolated public func fly() { … }
+
+    @MainActor
+    public func fly() { … }
+  }
+  ```
+
+  </details>
+
 * <a id='multi-line-array'></a>(<a href='#multi-line-array'>link</a>) **Multi-line arrays should have each bracket on a separate line.** Put the opening and closing brackets on separate lines from any of the elements of the array. Also add a trailing comma on the last element. [![SwiftFormat: wrapArguments](https://img.shields.io/badge/SwiftFormat-wrapArguments-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#wrapArguments)
 
   <details>
@@ -1634,7 +1660,8 @@ _You can enable the following settings in Xcode by running [this script](resourc
   class Planet {
     func terraform(
       atmosphereOptions: AtmosphereOptions = .default,
-      oceanOptions: OceanOptions = .default) {
+      oceanOptions: OceanOptions = .default
+    ) {
       generateAtmosphere(atmosphereOptions)
       generateOceans(oceanOptions)
     }
@@ -1651,8 +1678,8 @@ _You can enable the following settings in Xcode by running [this script](resourc
   class Planet {
     func terraform(
       atmosphereOptions: AtmosphereOptions = .default,
-      oceanOptions: OceanOptions = .default)
-    {
+      oceanOptions: OceanOptions = .default
+    ) {
       generateAtmosphere(atmosphereOptions)
       generateOceans(oceanOptions)
     }
@@ -2007,14 +2034,32 @@ _You can enable the following settings in Xcode by running [this script](resourc
   // WRONG
   internal class Spaceship {
     internal init() { … }
-
     internal func travel(to planet: Planet) { … }
   }
 
   // RIGHT, because internal access control is implied if no other access control level is specified.
   class Spaceship {
     init() { … }
+    func travel(to planet: Planet) { … }
+  }
+  ```
 
+  </details>
+
+* <a id='omit-redundant-public'></a>(<a href='#omit-redundant-public'>link</a>) **Avoid using `public` access control in `internal` types.** In this case the `public` modifier is redundant and has no effect. [![SwiftFormat: redundantPublic](https://img.shields.io/badge/SwiftFormat-redundantPublic-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#redundantPublic)
+
+  <details>
+
+  ```swift
+  // WRONG: Public declarations in internal types are internal, not public.
+  class Spaceship {
+    public init() { … }
+    public func travel(to planet: Planet) { … }
+  }
+
+  // RIGHT
+  class Spaceship {
+    init() { … }
     func travel(to planet: Planet) { … }
   }
   ```
@@ -2041,7 +2086,7 @@ _You can enable the following settings in Xcode by running [this script](resourc
 
   </details>
 
-* <a id='long-function-declaration'></a>(<a href='#long-function-declaration'>link</a>) **Separate [long](https://github.com/airbnb/swift#column-width) function declarations with line breaks before each argument label, and before the return signature or any effects (`async`, `throws`).** Put the open curly brace on the next line so the first executable line doesn't look like it's another parameter. [![SwiftFormat: wrapArguments](https://img.shields.io/badge/SwiftFormat-wrapArguments-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#wrapArguments) [![SwiftFormat: braces](https://img.shields.io/badge/SwiftFormat-braces-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#braces)
+* <a id='long-function-declaration'></a>(<a href='#long-function-declaration'>link</a>) **Separate [long](https://github.com/airbnb/swift#column-width) function declarations with line breaks before each argument label, and before the closing parenthesis (`)`). [![SwiftFormat: wrapArguments](https://img.shields.io/badge/SwiftFormat-wrapArguments-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#wrapArguments) [![SwiftFormat: braces](https://img.shields.io/badge/SwiftFormat-braces-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#braces) 
 
   <details>
 
@@ -2097,9 +2142,8 @@ _You can enable the following settings in Xcode by running [this script](resourc
       at location: Point,
       count: Int,
       color: StarColor,
-      withAverageDistance averageDistance: Float)
-      -> String
-    {
+      withAverageDistance averageDistance: Float
+    ) -> String {
       populateUniverse()
     }
 
@@ -2108,9 +2152,8 @@ _You can enable the following settings in Xcode by running [this script](resourc
       at location: Point,
       count: Int,
       color: StarColor,
-      withAverageDistance averageDistance: Float)
-      async throws -> String
-    {
+      withAverageDistance averageDistance: Float
+    ) async throws -> String {
       populateUniverse()
     }
   }
@@ -2118,7 +2161,7 @@ _You can enable the following settings in Xcode by running [this script](resourc
 
   </details>
 
-* <a id='long-function-invocation'></a>(<a href='#long-function-invocation'>link</a>) **[Long](https://github.com/airbnb/swift#column-width) function invocations should also break on each argument.** Put the closing parenthesis on the last line of the invocation. [![SwiftFormat: wrapArguments](https://img.shields.io/badge/SwiftFormat-wrapArguments-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#wrapArguments)
+* <a id='long-function-invocation'></a>(<a href='#long-function-invocation'>link</a>) **[Long](https://github.com/airbnb/swift#column-width) function calls should also break on each argument.** Put the closing parenthesis on its own line. [![SwiftFormat: wrapArguments](https://img.shields.io/badge/SwiftFormat-wrapArguments-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#wrapArguments)
 
   <details>
 
@@ -2137,8 +2180,7 @@ _You can enable the following settings in Xcode by running [this script](resourc
     at: location,
     count: 5,
     color: starColor,
-    withAverageDistance: 4
-  )
+    withAverageDistance: 4)
 
   // WRONG
   universe.generate(5,
@@ -2150,13 +2192,15 @@ _You can enable the following settings in Xcode by running [this script](resourc
     at: location,
     count: 5,
     color: starColor,
-    withAverageDistance: 4)
+    withAverageDistance: 4
+  )
 
   // RIGHT
   universe.generate(
     5,
     .stars,
-    at: location)
+    at: location
+  )
   ```
 
   </details>
@@ -2187,13 +2231,14 @@ _You can enable the following settings in Xcode by running [this script](resourc
       at location: Point,
       count: Int,
       color: StarColor,
-      withAverageDistance averageDistance: Float)
-    {
+      withAverageDistance averageDistance: Float
+    ) {
       let universe = generateUniverse()
       universe.generateStars(
         at: location,
         count: count,
-        withAverageDistance: averageDistance)
+        withAverageDistance: averageDistance
+      )
     }
     ```
 
@@ -2216,13 +2261,14 @@ _You can enable the following settings in Xcode by running [this script](resourc
       at location: Point,
       count: Int,
       color _: StarColor,
-      withAverageDistance averageDistance: Float)
-    {
+      withAverageDistance averageDistance: Float
+    ) {
       let universe = generateUniverse()
       universe.generateStars(
         at: location,
         count: count,
-        withAverageDistance: averageDistance)
+        withAverageDistance: averageDistance
+      )
     }
     ```
 
@@ -2427,16 +2473,18 @@ _You can enable the following settings in Xcode by running [this script](resourc
     
     func colonizePlanet() {
       spaceship.travel(to: planet, onArrival: { [weak self] in
-        guard let self else { return }
-        planet.colonize()
-      })
+          guard let self else { return }
+          planet.colonize()
+        }
+      )
     }
     
     func exploreSystem() {
       spaceship.travel(to: planet, nextDestination: { [weak self] in
-        guard let self else { return nil }
-        return planet.moons?.first
-      })
+          guard let self else { return nil }
+          return planet.moons?.first
+        }
+      )
     }
   }
   ```
@@ -2451,14 +2499,16 @@ _You can enable the following settings in Xcode by running [this script](resourc
     
     func colonizePlanet() {
       spaceship.travel(to: planet, onArrival: { [planet] in
-        planet.colonize()
-      })
+          planet.colonize()
+        }
+      )
     }
     
     func exploreSystem() {
       spaceship.travel(to: planet, nextDestination: { [planet] in
-        planet.moons?.first
-      })
+          planet.moons?.first
+        }
+      )
     }
   }
   ```
@@ -3204,14 +3254,16 @@ _You can enable the following settings in Xcode by running [this script](resourc
   var size: CGSize {
     return CGSize(
       width: 100.0,
-      height: 100.0)
+      height: 100.0
+    )
   }
 
   func makeInfoAlert(message: String) -> UIAlertController {
     return UIAlertController(
       title: "ℹ️ Info",
       message: message,
-      preferredStyle: .alert)
+      preferredStyle: .alert
+    )
   }
 
   var alertTitle: String {
@@ -3237,14 +3289,16 @@ _You can enable the following settings in Xcode by running [this script](resourc
   var size: CGSize {
     CGSize(
       width: 100.0,
-      height: 100.0)
+      height: 100.0
+    )
   }
 
   func makeInfoAlert(message: String) -> UIAlertController {
     UIAlertController(
       title: "ℹ️ Info",
       message: message,
-      preferredStyle: .alert)
+      preferredStyle: .alert
+    )
   }
 
   var alertTitle: String {
@@ -3374,7 +3428,8 @@ _You can enable the following settings in Xcode by running [this script](resourc
       at: location,
       count: 5,
       color: starColor,
-      withAverageDistance: 4)
+      withAverageDistance: 4
+    )
   }()
 
   // RIGHT
@@ -3384,7 +3439,8 @@ _You can enable the following settings in Xcode by running [this script](resourc
     at: location,
     count: 5,
     color: starColor,
-    withAverageDistance: 4)
+    withAverageDistance: 4
+  )
   ```
 
   </details>
@@ -3427,9 +3483,10 @@ _You can enable the following settings in Xcode by running [this script](resourc
     // WRONG
     func spaceshipDashboard<WarpDriveView: View, CaptainsLogView: View>(
       warpDrive: WarpDriveView,
-      captainsLog: CaptainsLogView)
-      -> some View
-    { … }
+      captainsLog: CaptainsLogView
+    ) -> some View {
+      …
+    }
 
     func generate<Planets>(_ planets: Planets) where Planets: Collection, Planets.Element == Planet {
       …
@@ -3438,9 +3495,10 @@ _You can enable the following settings in Xcode by running [this script](resourc
     // RIGHT
     func spaceshipDashboard(
       warpDrive: some View,
-      captainsLog: some View)
-      -> some View
-    { … }
+      captainsLog: some View
+    ) -> some View {
+      …
+    }
 
     func generate(_ planets: some Collection<Planet>) {
       …
@@ -3453,7 +3511,7 @@ _You can enable the following settings in Xcode by running [this script](resourc
     }
 
     // Also fine, since the generic parameter name is referenced in the function body so can't be removed:
-    func terraform<Body: PlanetaryBody>(_ planetaryBody: Body)  {
+    func terraform<Body: PlanetaryBody>(_ planetaryBody: Body) {
       planetaryBody.generateAtmosphere(Body.idealAtmosphere)
     }
     ```
@@ -3466,8 +3524,8 @@ _You can enable the following settings in Xcode by running [this script](resourc
     func assertFailure<Value>(
       _ result: Result<Value, Error>,
       file: StaticString = #filePath,
-      line: UInt = #line)
-    {
+      line: UInt = #line
+    ) {
       if case .failure(let error) = result {
         XCTFail(error.localizedDescription, file: file, line: line)
       }
@@ -3477,8 +3535,8 @@ _You can enable the following settings in Xcode by running [this script](resourc
     func assertFailure(
       _ result: Result<some Any, Error>,
       file: StaticString = #filePath,
-      line: UInt = #line)
-    {
+      line: UInt = #line
+    ) {
       if case .failure(let error) = result {
         XCTFail(error.localizedDescription, file: file, line: line)
       }
@@ -3752,7 +3810,7 @@ _You can enable the following settings in Xcode by running [this script](resourc
 
     </details>
 
-* <a id='redundant-environment-key-implementation'></a>(<a href='#redundant-environment-key-implementation'>link</a>) **Prefer using the `@Entry` macro to define properties inside `EnvironmentValues`**. When adding properties to SwiftUI `EnvironemtnValues`, prefer using the compiler-synthesized property implementation when possible. [![SwiftFormat: environmentEntry](https://img.shields.io/badge/SwiftFormat-environmentEntry-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/develop/Rules.md#environmentEntry)
+* <a id='redundant-environment-key-implementation'></a>(<a href='#redundant-environment-key-implementation'>link</a>) **Prefer using the `@Entry` macro to define properties inside `EnvironmentValues`**. When adding properties to SwiftUI `EnvironmentValues`, prefer using the compiler-synthesized property implementation when possible. [![SwiftFormat: environmentEntry](https://img.shields.io/badge/SwiftFormat-environmentEntry-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/develop/Rules.md#environmentEntry)
 
     <details>
 
@@ -3821,37 +3879,6 @@ _You can enable the following settings in Xcode by running [this script](resourc
 
   // RIGHT
   let planetsWithMoons = planets.count(where: { !$0.moons.isEmpty })
-  ```
-  </details>
-
-* <a id='swift-testing-test-case-names'></a>(<a href='#swift-testing-test-case-names'>link</a>) **In Swift Testing, don't prefix test case methods with "`test`".** [![SwiftFormat: swiftTestingTestCaseNames](https://img.shields.io/badge/SwiftFormat-swiftTestingTestCaseNames-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#swiftTestingTestCaseNames)
-
-  <details>
-
-  ### Why?
-
-  Prefixing test case methods with "`test`" was necessary with XCTest, but is not necessary in Swift Testing. [Idiomatic usage](https://developer.apple.com/documentation/testing/migratingfromxctest#Convert-test-methods) of Swift Testing excludes the "`test`" prefix.
-
-  ```swift
-  import Testing
-  
-  /// WRONG
-  struct SpaceshipTests {
-    @Test
-    func testWarpDriveEnablesFTLTravel() { ... }
-
-    @Test
-    func testArtificialGravityMatchesEarthGravity() { ... }
-  }
-
-  /// RIGHT
-  struct SpaceshipTests {
-    @Test
-    func warpDriveEnablesFTLTravel() { ... }
-
-    @Test
-    func artificialGravityMatchesEarthGravity() { ... }
-  }
   ```
   </details>
 
@@ -4231,39 +4258,6 @@ _You can enable the following settings in Xcode by running [this script](resourc
   ```
 
   </details>
-      
-* <a id='unused-private-declaration'></a>(<a href='#unused-private-declaration'>link</a>) **Remove unused private and fileprivate properties, functions, and typealiases** [![SwiftFormat: unusedPrivateDeclarations](https://img.shields.io/badge/SwiftFormat-unusedPrivateDeclarations-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#unusedPrivateDeclarations)
-
-  <details>
-
-  #### Why?
-  
-  Improves readability since the code has no effect and should be removed for clarity.
-  
-  ```swift
-  // WRONG: Includes private declarations that are unused
-  struct Planet {
-    var ageInBillionYears: Double {
-      ageInMillionYears / 1000
-    }
-    
-    private var ageInMillionsOfYears: Double
-    private typealias Dependencies = UniverseBuilderProviding // unused
-    private var mass: Double // unused
-    private func distance(to: Planet) { } // unused
-  }
-    
-  // RIGHT
-  struct Planet {
-    var ageInBillionsOfYears: Double {
-      ageInMillionYears / 1000
-    }
-
-    private var ageInMillionYears: Double
-  }
-  ```
-  
-  </details>
   
 * <a id='remove-empty-extensions'></a>(<a href='#remove-empty-extensions'>link</a>) **Remove empty extensions that define no properties, functions, or conformances.** [![SwiftFormat: emptyExtensions](https://img.shields.io/badge/SwiftFormat-emptyExtensions-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#emptyExtensions)
 
@@ -4301,7 +4295,8 @@ _You can enable the following settings in Xcode by running [this script](resourc
       acceptButton.addTarget(
         self,
         action: #selector(didTapAcceptButton),
-        forControlEvents: .touchUpInside)
+        forControlEvents: .touchUpInside
+      )
     }
 
     @objc
@@ -4311,6 +4306,120 @@ _You can enable the following settings in Xcode by running [this script](resourc
   }
   ```
 
+  </details>
+
+**[⬆ back to top](#table-of-contents)**
+
+## Testing
+
+* <a id='swift-testing-test-case-names'></a>(<a href='#swift-testing-test-case-names'>link</a>) **In Swift Testing, don't prefix test case methods with "`test`".** [![SwiftFormat: swiftTestingTestCaseNames](https://img.shields.io/badge/SwiftFormat-swiftTestingTestCaseNames-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#swiftTestingTestCaseNames)
+
+  <details>
+
+  ### Why?
+
+  Prefixing test case methods with "`test`" was necessary with XCTest, but is not necessary in Swift Testing. [Idiomatic usage](https://developer.apple.com/documentation/testing/migratingfromxctest#Convert-test-methods) of Swift Testing excludes the "`test`" prefix.
+
+  ```swift
+  import Testing
+  
+  /// WRONG
+  struct SpaceshipTests {
+    @Test
+    func testWarpDriveEnablesFTLTravel() { ... }
+
+    @Test
+    func testArtificialGravityMatchesEarthGravity() { ... }
+  }
+
+  /// RIGHT
+  struct SpaceshipTests {
+    @Test
+    func warpDriveEnablesFTLTravel() { ... }
+
+    @Test
+    func artificialGravityMatchesEarthGravity() { ... }
+  }
+  ```
+  </details>
+
+* <a id='avoid-guard-in-tests'></a>(<a href='#avoid-guard-in-tests'>link</a>) **Avoid `guard` statements in unit tests**. XCTest and Swift Testing have APIs for unwrapping an optional and failing the test, which are much simpler than unwrapping the optionals yourself. Use assertions instead of guarding on boolean conditions. [![SwiftFormat: noGuardInTests](https://img.shields.io/badge/SwiftFormat-noGuardInTests-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#noGuardInTests)
+
+  <details>
+
+  ```swift
+  import XCTest
+
+  final class SomeTestCase: XCTestCase {
+    func test_something() throws {
+      // WRONG:
+      guard let value = optionalValue, value.matchesCondition else {
+        XCTFail()
+        return
+      }
+
+      // RIGHT:
+      let value = try XCTUnwrap(optionalValue)
+      XCTAssert(value.matchesCondition)
+    }
+  }
+  ```
+
+  ```swift
+  import Testing
+
+  struct SomeTests {
+    @Test
+    func something() throws {
+      // WRONG:
+      guard let value = optionalValue, value.matchesCondition {
+        return
+      }
+
+      // RIGHT:
+      let value = try #require(optionalValue)
+      #expect(value.matchesCondition)
+    }
+  }
+  ```
+
+* <a id='prefer-throwing-tests'></a>(<a href='#prefer-throwing-tests'>link</a>) **Prefer throwing tests to `try!`** `try!` will crash your test suite like a force-unwrapped optional. XCTest and Swift Testing support throwing test methods, so use that instead. [![SwiftFormat: throwingTests](https://img.shields.io/badge/SwiftFormat-throwingTests-7B0051.svg)](https://github.com/nicklockwood/SwiftFormat/blob/main/Rules.md#throwingTests)
+
+  <details>
+
+  ```swift
+  import XCTest
+
+  final class SomeTestCase: XCTestCase {
+    // WRONG:
+    func test_something() {
+      try! Something().doSomething()
+    }
+
+    // RIGHT:
+    func test_something() throws {
+      try Something().doSomething()
+    }
+  }
+  ```
+
+  ```swift
+  import Testing
+
+  struct SomeTests {
+    // WRONG:
+    @Test
+    func something() {
+      try! Something().doSomething()
+    }
+
+    // RIGHT:
+    @Test
+    func something() throws {
+      try Something().doSomething()
+    }
+  }
+  ```
   </details>
 
 **[⬆ back to top](#table-of-contents)**
