@@ -5,10 +5,10 @@ let package = Package(
   name: "AirbnbSwift",
   platforms: [.macOS(.v10_13)],
   products: [
-    .plugin(name: "FormatSwift", targets: ["FormatSwift"]),
+    .plugin(name: "FormatSwift", targets: ["FormatSwift"])
   ],
   dependencies: [
-    .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.3"),
+    .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.3")
   ],
   targets: [
     .plugin(
@@ -19,7 +19,7 @@ let package = Package(
           description: "Formats Swift source files according to the Airbnb Swift Style Guide"
         ),
         permissions: [
-          .writeToPackageDirectory(reason: "Format Swift source files"),
+          .writeToPackageDirectory(reason: "Format Swift source files")
         ]
       ),
       dependencies: [
@@ -32,7 +32,7 @@ let package = Package(
     .executableTarget(
       name: "AirbnbSwiftFormatTool",
       dependencies: [
-        .product(name: "ArgumentParser", package: "swift-argument-parser"),
+        .product(name: "ArgumentParser", package: "swift-argument-parser")
       ],
       resources: [
         .process("airbnb.swiftformat"),
@@ -47,8 +47,8 @@ let package = Package(
 
     .binaryTarget(
       name: "swiftformat",
-      url: "https://github.com/calda/SwiftFormat-nightly/releases/download/2025-07-23-b/SwiftFormat.artifactbundle.zip",
-      checksum: "aa7dc5507589d56202a192e76b2abb5afc014d815695b4298e3edda1700ea736"
+      url: "https://github.com/calda/SwiftFormat-nightly/releases/download/2025-10-22/SwiftFormat.artifactbundle.zip",
+      checksum: "4b730f982ec7b26e958ac662fb53670a12c6ab4692f08e281c379821aeb0f080"
     ),
 
     .binaryTarget(
